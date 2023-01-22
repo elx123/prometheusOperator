@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata: 
+  name: alert-config 
+  labels: 
+    resource: prometheus 
+spec: 
+  route: 
+    groupBy: ["alertname"]
+    groupWait: 10s
+    groupInterval: 10s
+    repeatInterval: 10s
+    receiver: 'slack' 
+    routes:
+      - matchers:
+        - name: job
+          value: node-api
+  receivers: 
+    - name: slack 
+      slackConfigs: 
+      - apiURL:
+          key: 'https://hooks.slack.com/services/lksdafjlkdsflksdlkfjlk'
+          name: 'slackTest'
+      - channel: '#test' 
+        title: '{{.GroupLabels.severity}} alerts in region {{.GroupLabels.region}}' 
+        text: '{{ template "slack.default.text" . }}'

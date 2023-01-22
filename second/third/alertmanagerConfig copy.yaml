@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/Vlalphal 
+kind: alertmanagerconfigs
+metadata: 
+  name: alert-config 
+  labels: 
+    resource: prometheus 
+spec: 
+  route: 
+    groupby: ["alertname"]
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 12h
+    receiver: 'slack' 
+  receivers:
+    - name: "webhook"
+      webhookConfigs:
+      - url: "http://example.com"

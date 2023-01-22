@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: api-rules
+spec:
+  groups:
+    - name: api
+      rules:
+        - alert: down
+          expr: count:up1{job="node-api"} == 2
+          for: 0s
+          labels:
+            severity: critical
+          annotations:
+            summary: Prometheus target missing {{$labels.service}}            
+            
